@@ -3,7 +3,7 @@ name: Deploy PlayMood to VPS
 on:
   push:
     branches:
-      - thanh_nhan
+      - master
 # Cấp quyền cho GitHub Actions được phép lưu trữ Image
 permissions:
   contents: read
@@ -31,7 +31,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/hqtoann/playmood-app:latest
+          tags: ghcr.io/${{ github.repository_owner }}/playmood-app:${{github.sha}}
 
       # 4. Gửi file docker-compose.yml đã cập nhật lên VPS
       - name: Copy docker-compose to VPS
