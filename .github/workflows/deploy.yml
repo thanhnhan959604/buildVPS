@@ -42,10 +42,10 @@ jobs:
             cd /home/thanhnhan
             
             # Kéo bản cập nhật mới nhất từ GHCR
-            docker compose pull app
+            docker compose pull
             
-            # Tái khởi động lại container app
-            docker compose up -d app
+            # Tái khởi động lại container
+            docker compose up -d
             
             # Cập nhật DB và gom static files
             docker compose exec -T app python manage.py migrate --noinput
