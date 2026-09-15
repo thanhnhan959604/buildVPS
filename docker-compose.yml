@@ -15,7 +15,7 @@ services:
     mem_limit: 256m
 
   app:
-    image: ghcr.io/thanhnhan959605/buildvps:latest
+    image: ghcr.io/thanhnhan959604/buildvps:latest
     restart: always
     env_file: .env
     depends_on:
