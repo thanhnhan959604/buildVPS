@@ -33,32 +33,23 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/buildvps:${{github.sha}}
 
-      # 4. Gửi file docker-compose.yml đã cập nhật lên VPS
-      - name: Copy docker-compose to VPS
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          source: "docker-compose.yml"
-          target: "~/"
-
-      # 5. Mở khóa vào VPS, tải bản cập nhật và khởi động lại
-      - name: Execute deployment on VPS
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            # Đăng nhập trạm GHCR ngay trên VPS để lấy quyền tải file
-            echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-            
-            # Kéo (pull) bản code mới nhất vừa đóng gói về
-            docker compose pull app
-            
-            # Khởi động lại hệ thống với code mới (sẽ mất khoảng vài giây)
-            docker compose up -d
-            sleep 3
-            # Ra lệnh cho VPS tự thu thập file tĩnh (lúc này đã có file .env)
-            docker compose exec app python manage.py collectstatic --noinput
+deploy:
+    needs: build-and-push
+    runs-on: self-hosted
+    steps:
+      - name: Deploy application on VPS
+        run: |
+          cd ~/web-project
+          
+          # Kéo bản cập nhật mới nhất từ GHCR
+          docker compose pull app
+          
+          # Tái khởi động lại container app
+          docker compose up -d app
+          
+          # Cập nhật DB và gom static files
+          docker compose exec -T app python manage.py migrate --noinput
+          docker compose exec -T app python manage.py collectstatic --noinput
+          
+          # Xóa các image cũ để giải phóng dung lượng ổ cứng
+          docker image prune -f
