@@ -39,7 +39,7 @@ jobs:
       steps:
         - name: Deploy application on VPS
           run: |
-            cd ~/web-project
+            cd ~/home/thanhnhan
             
             # Kéo bản cập nhật mới nhất từ GHCR
             docker compose pull app
