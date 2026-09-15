@@ -31,7 +31,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/playmood-app:${{github.sha}}
+          tags: ghcr.io/${{ github.repository_owner }}/buildVPS:${{github.sha}}
 
       # 4. Gửi file docker-compose.yml đã cập nhật lên VPS
       - name: Copy docker-compose to VPS
