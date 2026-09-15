@@ -1,0 +1,46 @@
+# Virtual environment
+Pipfile
+Pipfile.lock
+venv/
+.venv/
+env/
+
+# Biến môi trường — chứa secret keys, KHÔNG commit
+.env
+.env*
+!.env.example
+settings.TN.py
+
+# Python cache & build
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Django
+*.sqlite3
+db_test.sqlite3
+staticfiles/
+media/
+
+# Binary / Heavy tools
+tectonic_bin/
+
+# Database dumps
+postgres_data/
+*.sql
+*.dump
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

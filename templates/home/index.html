@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayMood - Trang Chủ</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link href="{% static 'css/style.css' %}?v=24" rel="stylesheet">
+    <link href="{% static 'css/home.css' %}?v=24.2" rel="stylesheet">
+    <link href="{% static 'css/explore.css' %}?v=24" rel="stylesheet">
+    <style>
+        /* Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-card) 25%, #2a2a35 50%, var(--bg-card) 75%);
+            background-size: 400% 100%;
+            animation: skeleton-loading 1.5s infinite;
+        }
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .skeleton-card { width: 100%; min-width: 0; box-sizing: border-box; background: var(--bg-card); border-radius: 12px; padding: 1rem; }
+        .skeleton-card .sk-img { width: 100%; aspect-ratio: 1; border-radius: 8px; margin-bottom: 1rem; }
+        .skeleton-card .sk-title { height: 14px; border-radius: 4px; margin-bottom: 8px; width: 80%; }
+        .skeleton-card .sk-sub { height: 12px; border-radius: 4px; width: 55%; }
+        
+        .skeleton-artist { width: 100%; min-width: 0; display: flex; flex-direction: column; align-items: center; }
+        .skeleton-artist .sk-avatar { width: 140px; height: 140px; border-radius: 50%; margin-bottom: 1rem; }
+        .skeleton-artist .sk-name { height: 14px; border-radius: 4px; width: 100px; margin-bottom: 6px; }
+        .skeleton-artist .sk-role { height: 10px; border-radius: 4px; width: 60px; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main Wrapper -->
+        <div class="main-wrapper">
+            
+            <!-- LEFT SIDEBAR -->
+            {% include 'includes/left_sidebar.html' with active_page='home' %}
+            
+            <!-- MAIN CONTENT -->
+            <main class="main-content">
+                <!-- Header -->
+                {% include 'includes/top_header.html' %}
+                
+                <!-- Scrollable Content -->
+                <div class="content-scroll">
+                    <div class="explore-container">
+                    
+                    <!-- Bài hát thịnh hành Section -->
+                    <div class="home-section">
+                        <div class="section-title-container">
+                            <h2 class="section-title">Bài hát thịnh hành</h2>
+                            <a href="{% url 'explore_list_page' %}?section=trending" class="section-more-btn">Xem tất cả</a>
+                        </div>
+                        <div class="songs-grid-5 mb-5" id="trending-songs-container">
+                            {% for i in "123456" %}
+                            <div class="skeleton-card">
+                                <div class="skeleton sk-img"></div>
+                                <div class="skeleton sk-title"></div>
+                                <div class="skeleton sk-sub"></div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                    <!-- Gợi ý cho bạn Section -->
+                    <div class="home-section" id="recommendations-section" style="display: none;">
+                        <div class="section-title-container">
+                            <h2 class="section-title">Gợi ý cho bạn</h2>
+                            <a href="{% url 'explore_list_page' %}?section=for_you" class="section-more-btn">Xem tất cả</a>
+                        </div>
+                        <div class="songs-grid-5 mb-5" id="foryou-songs-container">
+                            {% for i in "123456" %}
+                            <div class="skeleton-card">
+                                <div class="skeleton sk-img"></div>
+                                <div class="skeleton sk-title"></div>
+                                <div class="skeleton sk-sub"></div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if user.is_authenticated %}
+                    <!-- Nghệ sĩ đề xuất Section -->
+                    <div class="home-section" id="artists-section" style="display: none;">
+                        <div class="section-title-container">
+                            <h2 class="section-title">Nghệ sĩ đề xuất</h2>
+                            <a href="{% url 'explore_list_page' %}?section=featured_artists" class="section-more-btn">Xem tất cả</a>
+                        </div>
+                        <div class="artists-grid-5 mb-5" id="recommended-artists-container">
+                            {% for i in "123456" %}
+                            <div class="skeleton-artist">
+                                <div class="skeleton sk-avatar"></div>
+                                <div class="skeleton sk-name"></div>
+                                <div class="skeleton sk-role"></div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Playlist đề xuất Section -->
+                    <div class="home-section" id="playlists-section" style="display: none;">
+                        <div class="section-title-container">
+                            <h2 class="section-title">Playlist gợi ý</h2>
+                            <a href="{% url 'explore_list_page' %}?section=for_you_playlists" class="section-more-btn">Xem tất cả</a>
+                        </div>
+                        <div class="songs-grid-5 mb-5" id="recommended-playlists-container">
+                            {% for i in "123456" %}
+                            <div class="skeleton-card">
+                                <div class="skeleton sk-img"></div>
+                                <div class="skeleton sk-title"></div>
+                                <div class="skeleton sk-sub"></div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <!-- Bảng Xếp Hạng Section -->
+                    <div class="home-section">
+                        <div class="section-title-container">
+                            <h2 class="section-title">Bảng xếp hạng</h2>
+                        </div>
+                        <div class="songs-grid-5 mb-5">
+                            <div class="text-secondary py-3 small w-100" style="grid-column: 1/-1;">Chưa có bảng xếp hạng nào.</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    </div>
+                </div>
+            </main>
+            
+            <!-- RIGHT SIDEBAR (Friends Activity) -->
+            {% include 'includes/right_sidebar.html' %}
+            
+        </div>
+        
+        <!-- PLAYER BAR -->
+        
+    </div>
+    
+    <!-- Mobile Offcanvas Menu -->
+    {% include 'includes/mobile_offcanvas.html' with active_page='home' %}
+    
+    {% include 'includes/player_bar.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}?v=24.2"></script>
+    <script>
+        window.USER_IS_AUTHENTICATED = "{{ user.is_authenticated|yesno:'true,false' }}" === "true";
+    </script>
+    <script src="{% static 'js/home.js' %}?v=24.2"></script>
+</body>
+</html>

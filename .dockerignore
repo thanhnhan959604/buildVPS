@@ -1,0 +1,26 @@
+# Môi trường ảo & Cache của Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+env/
+
+# File biến môi trường chứa bí mật (Bắt buộc chặn)
+.env
+.env*
+!.env.example
+
+# Cấu hình Git & IDE
+.git/
+.gitignore
+.github/
+.vscode/
+
+# Dữ liệu static/media được sinh ra lúc chạy (nếu đã mount volume riêng)
+media/
+staticfiles/
+
+# File hệ thống và file tạm
+.DS_Store
+*.log
