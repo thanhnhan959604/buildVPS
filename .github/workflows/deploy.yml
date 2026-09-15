@@ -10,7 +10,7 @@ permissions:
   packages: write
 
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       # 1. Lấy code mới nhất mà bạn vừa đẩy lên
@@ -33,23 +33,23 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/buildvps:${{github.sha}}
 
-deploy:
-    needs: build-and-push
-    runs-on: self-hosted
-    steps:
-      - name: Deploy application on VPS
-        run: |
-          cd ~/web-project
-          
-          # Kéo bản cập nhật mới nhất từ GHCR
-          docker compose pull app
-          
-          # Tái khởi động lại container app
-          docker compose up -d app
-          
-          # Cập nhật DB và gom static files
-          docker compose exec -T app python manage.py migrate --noinput
-          docker compose exec -T app python manage.py collectstatic --noinput
-          
-          # Xóa các image cũ để giải phóng dung lượng ổ cứng
-          docker image prune -f
+  deploy:
+      needs: build-and-push
+      runs-on: self-hosted
+      steps:
+        - name: Deploy application on VPS
+          run: |
+            cd ~/web-project
+            
+            # Kéo bản cập nhật mới nhất từ GHCR
+            docker compose pull app
+            
+            # Tái khởi động lại container app
+            docker compose up -d app
+            
+            # Cập nhật DB và gom static files
+            docker compose exec -T app python manage.py migrate --noinput
+            docker compose exec -T app python manage.py collectstatic --noinput
+            
+            # Xóa các image cũ để giải phóng dung lượng ổ cứng
+            docker image prune -f
